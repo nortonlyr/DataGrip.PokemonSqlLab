@@ -9,18 +9,17 @@ Sort the data by finding out which trainer has the strongest pokemon so that thi
  you want, but you will have to explain your decision.
  */
 
-SELECT p.id, p.name AS Pokemon_Name,
-       tr.trainername AS Trainer_Name,
-       pt.pokelevel AS PokeLevel,
-       p.primary_type as Primary_Type,
-       ty.name AS Type_Name,
-       p.secondary_type as Secondary_Type,
-       ty2.name AS Type_Name,
-       SUM(pokelevel) OVER(PARTITION BY p.name) as total_levels
+SELECT p.name AS 'Pokemon Name',
+t.trainername AS 'Trainer Name',
+pt.pokelevel 'Level', ty.name AS 'Primary Type', typ.name
+FROM pokemons AS p, trainers AS t , pokemon_trainer AS pt , types AS ty, types AS typ
+WHERE p.id = pt.pokemon_id AND t.trainerID = pt.trainerID
+AND ty.id=p.primary_type AND typ.id = p.secondary_type
+ORDER BY pt.pokelevel DESC, pt.attack DESC, pt.hp DESC
 
-FROM pokemons AS p, trainers AS tr, types AS ty, pokemon_trainer AS pt
-ORDER BY p.id;
-
+/*
+Based on the result, the strongest pokemon is Rayquaza, level 100, primary type is
+Dragon, in the pokemon series, Dragon is the strongest type in this game. */
 
 
 
